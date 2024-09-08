@@ -12,6 +12,9 @@ function populateDisplay(e) {
   if (e.target.classList.contains('digits') && (typeof firstNumber !== 'number')) {
     if (displayValue === '0' && e.target.id === '0') {
       return;
+    } else if (displayValue === '0' && e.target.id !== '0') {
+      displayValue = e.target.id;
+      displayContainer.textContent = displayValue;
     } else if (displayValue === '' && e.target.id === '0') {
       return;
     } else {
@@ -19,16 +22,27 @@ function populateDisplay(e) {
       displayContainer.textContent = displayValue;
     }
   } else if (e.target.classList.contains('digits') && (typeof firstNumber === 'number')) {
-    displayValue += e.target.id;
-    displayContainer.textContent = displayValue;
+    if (displayValue === '0' && e.target.id === '0') {
+      return;
+    } else if (displayValue === '0' && e.target.id !== '0') {
+      displayValue = e.target.id;
+      displayContainer.textContent = displayValue;
+    } else {
+      displayValue += e.target.id;
+      displayContainer.textContent = displayValue;
+    }
   } else if (e.target.classList.contains('operators')) {
-    if ((typeof firstNumber === 'number') && displayValue) {
+    if ((typeof firstNumber === 'number') && displayValue && operator) {
       secondNumber = Number(displayValue);
       let result = operate(operator, firstNumber, secondNumber);
       firstNumber = result;
       secondNumber = null;
       displayValue = String(result);
       displayContainer.textContent = displayValue;
+      operator = e.target.id;
+      displayValue = '';
+    } else if (typeof firstNumber === 'number' && displayValue && !operator) {
+      firstNumber = Number(displayValue);
       operator = e.target.id;
       displayValue = '';
     } else if (typeof firstNumber === 'number') {
@@ -44,7 +58,7 @@ function populateDisplay(e) {
       }
     }
   } else if (e.target.id === 'equals') {
-    if ((typeof firstNumber === 'number') && displayValue) {
+    if ((typeof firstNumber === 'number') && displayValue && operator) {
       secondNumber = Number(displayValue);
       let result = operate(operator, firstNumber, secondNumber);
       firstNumber = result;
@@ -52,6 +66,7 @@ function populateDisplay(e) {
       displayValue = String(result);
       displayContainer.textContent = displayValue;
       displayValue = '';
+      operator = '';
     }
   } else if (e.target.id === 'clear') {
     firstNumber = null;
@@ -60,6 +75,23 @@ function populateDisplay(e) {
     displayContainer.textContent = displayValue;
     displayValue = '';
     operator = null;
+  } else if (e.target.id === 'sign' && displayContainer.textContent !== '0' && displayContainer.textContent !== '') {
+    if ((typeof firstNumber === 'number') && displayValue === '') {
+      displayValue = String(-Number(displayContainer.textContent));
+      displayContainer.textContent = displayValue;
+      firstNumber = Number(displayValue);
+      displayValue = '';
+    } else {
+      displayValue = String(-Number(displayContainer.textContent));
+      displayContainer.textContent = displayValue;
+    }
+  } else if (e.target.id === 'backspace' && displayValue !== '0' && displayValue !== '') {
+    displayValue = displayValue.slice(0, displayValue.length - 1);
+    displayContainer.textContent = displayValue;
+    if (displayValue === '') {
+      displayValue = '0';
+      displayContainer.textContent = displayValue;
+    }
   }
 }
 
