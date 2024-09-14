@@ -103,6 +103,9 @@ function populateDisplay(e) {
       displayValue = displayContainer.textContent.concat('.');
       displayContainer.textContent = displayValue;
     }
+  } else if (e.target.id === 'percent' && (typeof firstNumber === 'number') && operator && displayValue) {
+    displayValue = String(firstNumber * (Number(displayValue) / 100));
+    displayContainer.textContent = displayValue;
   }
 }
 
@@ -199,7 +202,8 @@ function calculateThroughKeyboard(e) {
     case "F9":
       document.querySelector('#sign').click();
       break;
-    default:
-      console.log(e.key);
+    case "%":
+      document.querySelector('#percent').click();
+      break;
   }
 }
