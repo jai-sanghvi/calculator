@@ -7,28 +7,29 @@ const buttonsContainer = document.querySelector('#buttons-container');
 const displayContainer = document.querySelector('#display');
 
 buttonsContainer.addEventListener('click', populateDisplay);
+document.addEventListener('keydown', calculateThroughKeyboard);
 
 function populateDisplay(e) {
   if (e.target.classList.contains('digits') && (typeof firstNumber !== 'number')) {
-    if (displayValue === '0' && e.target.id === '0') {
+    if (displayValue === '0' && e.target.id === 'zero') {
       return;
-    } else if (displayValue === '0' && e.target.id !== '0') {
-      displayValue = e.target.id;
+    } else if (displayValue === '0' && e.target.id !== 'zero') {
+      displayValue = e.target.textContent;
       displayContainer.textContent = displayValue;
-    } else if (displayValue === '' && e.target.id === '0') {
+    } else if (displayValue === '' && e.target.id === 'zero') {
       return;
     } else {
-      displayValue += e.target.id;
+      displayValue += e.target.textContent;
       displayContainer.textContent = displayValue;
     }
   } else if (e.target.classList.contains('digits') && (typeof firstNumber === 'number')) {
-    if (displayValue === '0' && e.target.id === '0') {
+    if (displayValue === '0' && e.target.id === 'zero') {
       return;
-    } else if (displayValue === '0' && e.target.id !== '0') {
-      displayValue = e.target.id;
+    } else if (displayValue === '0' && e.target.id !== 'zero') {
+      displayValue = e.target.textContent;
       displayContainer.textContent = displayValue;
     } else {
-      displayValue += e.target.id;
+      displayValue += e.target.textContent;
       displayContainer.textContent = displayValue;
     }
   } else if (e.target.classList.contains('operators')) {
@@ -92,6 +93,16 @@ function populateDisplay(e) {
       displayValue = '0';
       displayContainer.textContent = displayValue;
     }
+  } else if (e.target.id === 'point') {
+    if ((typeof firstNumber === 'number') && displayValue === '') {
+      displayValue = '0.';
+      displayContainer.textContent = displayValue;
+    } else if (displayContainer.textContent.includes('.')) {
+      return;
+    } else {
+      displayValue = displayContainer.textContent.concat('.');
+      displayContainer.textContent = displayValue;
+    }
   }
 }
 
@@ -127,4 +138,68 @@ function multiply(a, b) {
 }
 function divide(a, b) {
   return a / b;
+}
+
+function calculateThroughKeyboard(e) {
+  switch (e.key) {
+    case "0":
+      document.querySelector('#zero').click();
+      break;
+    case "1":
+      document.querySelector('#one').click();
+      break;
+    case "2":
+      document.querySelector('#two').click();
+      break;
+    case "3":
+      document.querySelector('#three').click();
+      break;
+    case "4":
+      document.querySelector('#four').click();
+      break;
+    case "5":
+      document.querySelector('#five').click();
+      break;
+    case "6":
+      document.querySelector('#six').click();
+      break;
+    case "7":
+      document.querySelector('#seven').click();
+      break;
+    case "8":
+      document.querySelector('#eight').click();
+      break;
+    case "9":
+      document.querySelector('#nine').click();
+      break;
+    case ".":
+      document.querySelector('#point').click();
+      break;
+    case "+":
+      document.querySelector('#addition').click();
+      break;
+    case "-":
+      document.querySelector('#subtraction').click();
+      break;
+    case "*":
+      document.querySelector('#multiplication').click();
+      break;
+    case "/":
+      document.querySelector('#division').click();
+      break;
+    case "Backspace":
+      document.querySelector('#backspace').click();
+      break;
+    case "Enter":
+      document.querySelector('#equals').click();
+      break;
+    case "Delete":
+      document.querySelector('#clear').click();
+      break;
+    case "F9":
+      document.querySelector('#sign').click();
+      break;
+    default:
+      console.log(e.key);
+  }
 }
